@@ -13,8 +13,10 @@
     		</tr>
     	</thead>
     	<tbody>
-    		<tr>
-    			<td></td>
+    		<tr v-for="customer in customers">
+    			<td>{{customer.first_name}}</td>
+    			<td>{{customer.last_name}}</td>
+    			<td>{{customer.email}}</td>
     		</tr>
     	</tbody>
     </table>
@@ -26,8 +28,24 @@ export default {
   name: 'customers',
   data () {
     return {
-      
+      customers: []
     }
+  },
+  methods: {
+  	fetchCustomers(){
+  		this.$http.get('http://slimapp/api/customers')
+  			.then(function(response){
+  			
+  				let res = response.body;
+  				// console.log(typeof(res));
+  				let resString = res.slice(9);
+
+  				this.customers = JSON.parse(resString);
+  			});
+  	}
+  },
+  created: function(){
+  	this.fetchCustomers();
   }
 }
 </script>
