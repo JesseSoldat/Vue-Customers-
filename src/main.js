@@ -7,6 +7,8 @@ import vueResource from 'vue-resource'
 
 import Customers from './components/Customers';
 import About from './components/About';
+import Add from './components/Add';
+
 
 
 Vue.use(vueResource)
@@ -17,7 +19,8 @@ const router = new VueRouter({
 	base: __dirname,
 	routes: [
 		{path: '/', component: Customers},
-		{path: '/about', component: About}
+		{path: '/about', component: About},
+    {path: '/add', component: Add}
 	]
 })
 /* eslint-disable no-new */
