@@ -1,7 +1,8 @@
 <template>
   <div class="customers container">
+    <Alert v-if="alert" v-bind:message="alert" />
     <h1 class="page-header">Manage Customers</h1>
-    <input class="form-control" placeholder="Enter Last Name">
+    <input class="form-control" placeholder="Enter Last Name" v-model="filterInput">
     <br>
     <table class="table tabel-striped">
     	<thead>
@@ -13,10 +14,11 @@
     		</tr>
     	</thead>
     	<tbody>
-    		<tr v-for="customer in customers">
+    		<tr v-for="customer in filterBy(customers, filterInput)">
     			<td>{{customer.first_name}}</td>
     			<td>{{customer.last_name}}</td>
     			<td>{{customer.email}}</td>
+    			<td><router-link class="btn btn-default" v-bind:to="'/details/'+customer.id">View</router-link></td>
     		</tr>
     	</tbody>
     </table>
@@ -24,11 +26,17 @@
 </template>
 
 <script>
+import Alert from './Alert';
 export default {
   name: 'customers',
+  components: {
+    Alert
+  },
   data () {
     return {
-      customers: []
+      customers: [],
+      filterInput:'',
+      alert: ''
     }
   },
   methods: {
@@ -42,10 +50,19 @@ export default {
 
   				this.customers = JSON.parse(resString);
   			});
-  	}
+  	},
+    
+    filterBy(list, value){
+        value = value.charAt(0).toUpperCase() + value.slice(1);
+        console.log(value)
+        return list.filter(function(customer){
+          return customer.last_name.indexOf(value) > -1;
+        });
+      }
   },
   created: function(){
   	this.fetchCustomers();
+    this.alert = this.$route.query.alert;
   }
 }
 </script>

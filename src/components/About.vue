@@ -1,6 +1,7 @@
 <template>
-  <div class="about">
-    About
+  <div class="about container">
+    <h1 class="page-header">About</h1>
+    <p>Customer App Version 0.1</p>
   </div>
 </template>
 

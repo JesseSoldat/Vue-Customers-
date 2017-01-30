@@ -1,5 +1,6 @@
 <template>
   <div class="add container">
+    <Alert v-if="alert" v-bind:message="alert" />
     <h1 class="page-header">Add Customer</h1>
     <form v-on:submit="addCustomer">
     	<div class="well">
@@ -50,18 +51,23 @@
 </template>
 
 <script>
+import Alert from './Alert';
 export default {
   name: 'add',
+  components: {
+    Alert
+  },
   data () {
     return {
-      customer: {}
+      customer: {},
+      alert: ''
     }
   },
   methods: {
   	addCustomer(e){
   		e.preventDefault();
   		if(!this.customer.first_name || !this.customer.last_name || !this.customer.email){
-  			console.log('missing fields')
+  			this.alert = "Please fill in all required fields!"
   		} else {
   			let newCustomer = {
 	          first_name: this.customer.first_name,
@@ -74,7 +80,7 @@ export default {
 	      }
 	      this.$http.post('http://slimapp/api/customer/add', newCustomer)
 	      	.then(function(res){
-	      		this.$router.push({path: '/'});
+	      		this.$router.push({path: '/', query: {alert: 'Customer Added'}});
 	      	});
   		}
   	}
